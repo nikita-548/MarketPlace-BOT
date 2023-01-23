@@ -10,7 +10,7 @@ PGPASSWORD = str(os.getenv("POSTGRES_PASSWORD"))
 DATABASE = str(os.getenv("DB_NAME"))
 
 admins = [
-    'тут ваш Telegram ID'
+
 ]
 
 ip = os.getenv("ip")
