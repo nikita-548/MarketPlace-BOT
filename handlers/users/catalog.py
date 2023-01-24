@@ -1,6 +1,6 @@
 from aiogram import types
 from admin_panel.admin_panel.settings import MEDIA_ROOT
-from handlers.users.start import bot_start
+from handlers.users.start import start_cmd
 from keyboards.inline.catalog import catalog_keyboard, callback_data_catalog
 from loader import dp, bot
 from aiogram.dispatcher.filters import Text
@@ -49,7 +49,7 @@ async def show_next_product(call: types.CallbackQuery, callback_data: dict):
 @dp.callback_query_handler(Text(equals='go_to_menu'))
 async def go_to_menu_from_catalog(call: types.CallbackQuery):
     await bot.delete_message(message_id=call.message.message_id, chat_id=call.from_user.id)
-    await bot_start(call.message)
+    await start_cmd(call.message)
 
 
 @dp.callback_query_handler(callback_data_catalog.filter(action=["buy"]))

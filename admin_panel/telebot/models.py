@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.html import mark_safe
 
 User = get_user_model()
 
@@ -39,3 +38,35 @@ class Product(CreatedModel):
     )
 
     product_image = models.ImageField(upload_to='images/')
+
+
+class Users(models.Model):
+    user_id = models.IntegerField(
+        verbose_name='Юзер ID',
+        help_text='Юзер ID',
+        max_length=100
+    )
+    balance = models.IntegerField(
+        verbose_name='Баланс',
+        help_text='Баланс',
+        default=0,
+        max_length=100
+    )
+    bought = models.IntegerField(
+        verbose_name='Количество покупок',
+        help_text='Количество покупок',
+        default=0,
+        max_length=100
+    )
+    name = models.CharField(
+        verbose_name='Имя пользователя',
+        help_text='Имя пользователя',
+        default='None',
+        max_length=100
+    )
+    username = models.CharField(
+        verbose_name='username',
+        help_text='username',
+        default='None',
+        max_length=100
+    )
