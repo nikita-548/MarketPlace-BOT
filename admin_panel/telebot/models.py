@@ -37,6 +37,12 @@ class Product(CreatedModel):
         help_text='Стоимость продукта',
     )
 
+    product_quantity = models.IntegerField(
+        verbose_name='Количество товара',
+        help_text='Количество товара',
+        default=1
+    )
+
     product_image = models.ImageField(upload_to='images/')
 
 
