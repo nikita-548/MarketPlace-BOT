@@ -10,6 +10,20 @@ from data.Texts import Texts
 from utils.db_api.db_commands import update_balance
 
 
+@dp.callback_query_handler(text='balance_state_from_catalog')
+async def balance_state_from_catalog(callback: types.CallbackQuery, state: FSMContext):
+    await state.set_state(UserState.add_balance_state)
+    text = Texts['balance_state']
+    await bot.delete_message(chat_id=callback.from_user.id, message_id=callback.message.message_id)
+
+    new_message = await bot.send_message(chat_id=callback.from_user.id,
+                           text=text,
+                           reply_markup=gen_balance_kb())
+
+    await state.update_data(prev_msg_id=new_message.message_id,
+                            add_to_balance=0)
+
+
 @dp.callback_query_handler(text='balance_state')
 async def balance_state(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(UserState.add_balance_state)

@@ -43,5 +43,5 @@ def update_balance(user_id, add_to_balance):
 
 @sync_to_async()
 def buy_product(user_id, product_id, price):
-    Users.objects.filter(user_id=user_id).update(balance=F('balance') - price)
+    Users.objects.filter(user_id=user_id).update(balance=F('balance') - price, bought=F('bought') + 1)
     Product.objects.filter(id=product_id).update(product_quantity=F('product_quantity') - 1)

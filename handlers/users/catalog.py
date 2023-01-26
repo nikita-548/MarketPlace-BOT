@@ -1,4 +1,6 @@
 from aiogram import types
+from aiogram.types import InlineKeyboardButton
+
 from admin_panel.admin_panel.settings import MEDIA_ROOT
 from data.Texts import Texts
 from keyboards.inline.catalog import catalog_keyboard, callback_data_catalog
@@ -19,7 +21,7 @@ async def show_catalog(call: types.CallbackQuery):
            f"Описание: {product.product_description}\n" \
            f'Стоимость: {product.product_price}'
 
-    image = types.InputFile(os.path.join(MEDIA_ROOT, str(product.product_image)))
+    image = product.product_image
     await bot.send_photo(call.from_user.id, caption=text, photo=image,
                          reply_markup=await catalog_keyboard(product_id=local_id))
 
@@ -45,7 +47,8 @@ async def show_next_product(call: types.CallbackQuery, callback_data: dict):
     text = f'Название продукта: {product.product_name}\n' \
            f'Описание: {product.product_description}\n' \
            f'Стоимость: {product.product_price}'
-    photo = types.InputMedia(media=types.InputFile(os.path.join(MEDIA_ROOT, str(product.product_image))), caption=text)
+
+    photo = types.InputMedia(media=product.product_image, caption=text)
     await call.message.edit_media(media=photo, reply_markup=await catalog_keyboard(product_id=new_local_product_id))
 
 
@@ -68,7 +71,13 @@ async def buy_function(call: types.CallbackQuery, callback_data: dict):
     if product.product_quantity == 0:
         await call.answer('Товара нет в наличии', show_alert=True)
     elif product.product_price > user.balance:
+        reply = await catalog_keyboard(product_id)
+        add_balance_btn = InlineKeyboardButton('Пополнить', callback_data='balance_state_from_catalog')
+        reply.add(add_balance_btn)
+        await bot.edit_message_reply_markup(message_id=call.message.message_id, chat_id=call.from_user.id,
+                                            reply_markup=reply)
         await call.answer('Недостаточно средств', show_alert=True)
+
     else:
         await buy_product(call.from_user.id, product_id, product.product_price)
         await call.answer('Товар приобретен', show_alert=True)

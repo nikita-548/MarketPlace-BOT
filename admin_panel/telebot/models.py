@@ -43,7 +43,11 @@ class Product(CreatedModel):
         default=1
     )
 
-    product_image = models.ImageField(upload_to='images/')
+    product_image = models.CharField(
+        verbose_name='Id фото',
+        help_text='Id фото',
+        max_length=1000
+    )
 
 
 class Users(models.Model):

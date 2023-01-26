@@ -12,6 +12,11 @@ from data.Texts import Texts
 # async def bot_start(message: types.Message):
 #    await message.answer('Меню', reply_markup=menu)
 
+@dp.message_handler(content_types=["document", "video", "audio", "photo"])
+async def handle_files(message: types.Message):
+    document_id = message.photo[0].file_id
+    await bot.send_message(message.chat.id, document_id)
+
 
 @dp.message_handler(CommandStart())
 async def start_cmd(message: types.Message):
